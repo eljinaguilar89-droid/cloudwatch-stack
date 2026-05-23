@@ -112,7 +112,7 @@ cloudwatch-stack/
 
 1. Clone the repo
 
-    git clone https://github.com/YOURUSERNAME/cloudwatch-stack.git  
+    git clone https://github.com/eljinaguilar89-droid/cloudwatch-stack
     cd cloudwatch-stack
 
 2. Provision infrastructure with Terraform
@@ -272,5 +272,5 @@ Monitoring, alerting, performance       | Prometheus scrapes metrics, Grafana da
 ## Author
 
 Eljin — BS Computer Engineering, STI College Global City  
-GitHub: https://github.com/YOURUSERNAME  
-LinkedIn: https://linkedin.com/in/YOURPROFILE
+GitHub: https://github.com/eljinaguilar89-droid
+LinkedIn: https://www.linkedin.com/in/eljin-aguilar/
