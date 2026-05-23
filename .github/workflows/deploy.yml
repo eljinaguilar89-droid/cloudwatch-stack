@@ -43,14 +43,24 @@ jobs:
       # ─────────────────────────────────────────
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.0
+        # We define the secrets here so the script can use them safely
+        env:
+          SMTP_EMAIL: ${{ secrets.SMTP_EMAIL }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
+          envs: SMTP_EMAIL,SMTP_PASSWORD  # Pass the env variables into the script
           # These commands run on your EC2 server
           script: |
             # Go to the project folder
             cd /home/ubuntu/cloudwatch-stack/monitoring
+
+            # Dynamically create the .env file
+            # Note: We use > to create the file, and >> to add the second line
+            echo "SMTP_EMAIL=$SMTP_EMAIL" > .env
+            echo "SMTP_PASSWORD=$SMTP_PASSWORD" >> .env
 
             # Pull the latest image you just pushed to Docker Hub
             docker compose pull

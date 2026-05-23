@@ -90,11 +90,15 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=cloudwatch123
       # Disable the annoying "change password" prompt on first login
       - GF_SECURITY_DISABLE_INITIAL_ADMIN_PASSWORD_RESET=true
+      - GF_SMTP_ENABLED=true
+      - GF_SMTP_HOST=smtp.gmail.com:587
+      - GF_SMTP_USER=${SMTP_EMAIL}
+      - GF_SMTP_PASSWORD=${SMTP_PASSWORD}
+      - GF_SMTP_FROM_ADDRESS=${SMTP_EMAIL}
     volumes:
-      # Persistent storage so dashboards survive restarts
       - grafana_data:/var/lib/grafana
-      # Auto-configure Prometheus as a data source on startup
       - ./grafana/provisioning:/etc/grafana/provisioning
+      # This now covers datasources/, dashboards/, and dashboards-json/
     depends_on:
       - prometheus
 
