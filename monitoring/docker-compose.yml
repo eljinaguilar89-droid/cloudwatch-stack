@@ -1,0 +1,106 @@
+version: "3.8"
+
+# Networks let containers talk to each other by name
+# Instead of using IP addresses, your containers use names like "prometheus" or "app"
+networks:
+  monitoring:
+    driver: bridge
+
+services:
+
+  # ─────────────────────────────────────────
+  # YOUR APP
+  # ─────────────────────────────────────────
+  app:
+    build:
+      context: ../app      # points to your app/ folder from Step 3
+      dockerfile: Dockerfile
+    container_name: cloudwatch-app
+    ports:
+      - "3001:3001"        # your machine:container
+    networks:
+      - monitoring
+    restart: unless-stopped
+    # Tells Docker this container is healthy when /hello returns 200
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001/hello"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ─────────────────────────────────────────
+  # CADVISOR
+  # ─────────────────────────────────────────
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    ports:
+      - "8080:8080"
+    networks:
+      - monitoring
+    restart: unless-stopped
+    # cAdvisor needs access to these to read Docker's stats
+    volumes:
+      - /:/rootfs:ro                          # read-only access to the root filesystem
+      - /var/run:/var/run:ro                  # Docker socket lives here
+      - /sys:/sys:ro                          # system info
+      - /var/lib/docker/:/var/lib/docker:ro   # Docker container data
+      - /dev/disk/:/dev/disk:ro               # disk info
+    privileged: true   # needs elevated access to read system-level stats
+
+  # ─────────────────────────────────────────
+  # PROMETHEUS
+  # ─────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring
+    restart: unless-stopped
+    volumes:
+      # Mount your prometheus.yml config into the container
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      # Persistent storage so data survives container restarts
+      - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=7d"   # keep 7 days of data
+      - "--web.enable-lifecycle"              # allows hot reload of config
+    # Wait for cAdvisor and app to be up before starting
+    depends_on:
+      - cadvisor
+      - app
+
+  # ─────────────────────────────────────────
+  # GRAFANA
+  # ─────────────────────────────────────────
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - monitoring
+    restart: unless-stopped
+    environment:
+      # Default login credentials
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=cloudwatch123
+      # Disable the annoying "change password" prompt on first login
+      - GF_SECURITY_DISABLE_INITIAL_ADMIN_PASSWORD_RESET=true
+    volumes:
+      # Persistent storage so dashboards survive restarts
+      - grafana_data:/var/lib/grafana
+      # Auto-configure Prometheus as a data source on startup
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - prometheus
+
+# Named volumes — Docker manages these on disk
+# Data persists even if you stop or recreate containers
+volumes:
+  prometheus_data:
+  grafana_data:

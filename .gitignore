@@ -1,0 +1,7 @@
+.terraform/
+*.tfstate
+*.tfstate.*
+*.pem
+.terraform.lock.hcl
+
+app/node_modules
