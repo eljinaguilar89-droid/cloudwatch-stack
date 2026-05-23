@@ -12,12 +12,11 @@ services:
   # YOUR APP
   # ─────────────────────────────────────────
   app:
-    build:
-      context: ../app      # points to your app/ folder from Step 3
-      dockerfile: Dockerfile
+    # Remove the build section, replace with image
+    image: eljinaguilar/cloudwatch-app:latest
     container_name: cloudwatch-app
     ports:
-      - "3001:3001"        # your machine:container
+      - "3001:3001"
     networks:
       - monitoring
     restart: unless-stopped

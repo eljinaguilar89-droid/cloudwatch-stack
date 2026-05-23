@@ -1,9 +1,9 @@
-.terraform/
-*.tfstate
-*.tfstate.*
-*.pem
-.terraform.lock.hcl
-
-app/node_modules
-
+# .gitignore
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/*.pem
+terraform/.terraform.lock.hcl
+node_modules/
 info.txt
+.env
