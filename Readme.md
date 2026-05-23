@@ -1,7 +1,7 @@
 # CloudWatch Stack
 
-A production-style cloud monitoring platform built on AWS Free Tier.
-Automatically provisioned with Terraform and deployed via a GitHub Actions CI/CD pipeline.
+A production-style cloud monitoring platform built on AWS Free Tier.  
+Automatically provisioned with Terraform and deployed via a GitHub Actions CI/CD pipeline.  
 Monitors a containerized Node.js API using Prometheus and Grafana.
 
 ---
@@ -21,31 +21,31 @@ This project demonstrates a full cloud engineering workflow:
 
 ## Architecture
 
-Your Machine
-    │
-    │  terraform apply
-    ▼
-AWS (ap-southeast-1)
-    ├── VPC (10.0.0.0/16)
-    │   └── Public Subnet (10.0.1.0/24)
-    │       ├── Internet Gateway
-    │       ├── Route Table
-    │       └── EC2 t2.micro (Ubuntu 22.04)
-    │           │
-    │           │  Docker Compose
-    │           ├── cloudwatch-app  :3001
-    │           ├── cAdvisor        :8080
-    │           ├── Prometheus      :9090
-    │           └── Grafana         :3000
-    │
-GitHub (main branch push)
-    │
-    │  GitHub Actions
-    │  1. Build Docker image
-    │  2. Push to Docker Hub
-    │  3. SSH into EC2
-    │  4. docker compose pull && up -d
-    ▼
+Your Machine  
+&nbsp;&nbsp;&nbsp;&nbsp;│  
+&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;terraform apply  
+&nbsp;&nbsp;&nbsp;&nbsp;▼  
+AWS (ap-southeast-1)  
+&nbsp;&nbsp;&nbsp;&nbsp;├── VPC (10.0.0.0/16)  
+&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── Public Subnet (10.0.1.0/24)  
+&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── Internet Gateway  
+&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── Route Table  
+&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── EC2 t2.micro (Ubuntu 22.04)  
+&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│  
+&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;Docker Compose  
+&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── cloudwatch-app&nbsp;&nbsp;:3001  
+&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── cAdvisor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:8080  
+&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── Prometheus&nbsp;&nbsp;&nbsp;&nbsp;:9090  
+&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── Grafana&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:3000  
+&nbsp;&nbsp;&nbsp;&nbsp;│  
+GitHub (main branch push)  
+&nbsp;&nbsp;&nbsp;&nbsp;│  
+&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;GitHub Actions  
+&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;1. Build Docker image  
+&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;2. Push to Docker Hub  
+&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;3. SSH into EC2  
+&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;4. docker compose pull && up -d  
+&nbsp;&nbsp;&nbsp;&nbsp;▼  
 Live on EC2
 
 ---
@@ -69,31 +69,31 @@ prom-client           | Prometheus client library used to instrument the Node.js
 
 ## Project Structure
 
-cloudwatch-stack/
-├── .github/
-│   └── workflows/
-│       └── deploy.yml              # GitHub Actions CI/CD pipeline
-├── terraform/
-│   ├── versions.tf                 # Provider version locks
-│   ├── variables.tf                # Configurable values (region, instance type)
-│   ├── main.tf                     # VPC, subnet, security group, EC2
-│   ├── outputs.tf                  # Prints IP, SSH command, and URLs after apply
-│   └── userdata.sh                 # Bootstraps Docker on first EC2 boot
-├── app/
-│   ├── index.js                    # Express API with /hello and /metrics endpoints
-│   ├── package.json
-│   └── Dockerfile
-├── monitoring/
-│   ├── docker-compose.yml          # Runs app, cAdvisor, Prometheus, Grafana
-│   ├── prometheus.yml              # Scrape targets and intervals
-│   └── grafana/
-│       └── provisioning/
-│           ├── datasources/
-│           │   └── prometheus.yml  # Auto-connects Prometheus to Grafana
-│           ├── dashboards/
-│           │   └── dashboard.yml   # Tells Grafana where to find dashboards
-│           └── dashboards-json/
-│               └── cloudwatch.json # Dashboard definition as code
+cloudwatch-stack/  
+├── .github/  
+│&nbsp;&nbsp;└── workflows/  
+│&nbsp;&nbsp;&nbsp;&nbsp;└── deploy.yml              # GitHub Actions CI/CD pipeline  
+├── terraform/  
+│&nbsp;&nbsp;├── versions.tf                 # Provider version locks  
+│&nbsp;&nbsp;├── variables.tf                # Configurable values (region, instance type)  
+│&nbsp;&nbsp;├── main.tf                     # VPC, subnet, security group, EC2  
+│&nbsp;&nbsp;├── outputs.tf                  # Prints IP, SSH command, and URLs after apply  
+│&nbsp;&nbsp;└── userdata.sh                 # Bootstraps Docker on first EC2 boot  
+├── app/  
+│&nbsp;&nbsp;├── index.js                    # Express API with /hello and /metrics endpoints  
+│&nbsp;&nbsp;├── package.json  
+│&nbsp;&nbsp;└── Dockerfile  
+├── monitoring/  
+│&nbsp;&nbsp;├── docker-compose.yml          # Runs app, cAdvisor, Prometheus, Grafana  
+│&nbsp;&nbsp;├── prometheus.yml              # Scrape targets and intervals  
+│&nbsp;&nbsp;└── grafana/  
+│&nbsp;&nbsp;&nbsp;&nbsp;└── provisioning/  
+│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── datasources/  
+│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;└── prometheus.yml  # Auto-connects Prometheus to Grafana  
+│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── dashboards/  
+│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;└── dashboard.yml   # Tells Grafana where to find dashboards  
+│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── dashboards-json/  
+│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── cloudwatch.json # Dashboard definition as code  
 └── README.md
 
 ---
@@ -112,22 +112,22 @@ cloudwatch-stack/
 
 1. Clone the repo
 
-    git clone https://github.com/YOURUSERNAME/cloudwatch-stack.git
+    git clone https://github.com/YOURUSERNAME/cloudwatch-stack.git  
     cd cloudwatch-stack
 
 2. Provision infrastructure with Terraform
 
-    cd terraform
-    terraform init
-    terraform plan
+    cd terraform  
+    terraform init  
+    terraform plan  
     terraform apply
 
     After apply completes, Terraform prints your server's IP and ready-to-use URLs:
 
-    server_public_ip = "54.179.XXX.XXX"
-    ssh_command      = "ssh -i cloudwatch-stack-key.pem ubuntu@54.179.XXX.XXX"
-    grafana_url      = "http://54.179.XXX.XXX:3000"
-    prometheus_url   = "http://54.179.XXX.XXX:9090"
+    server_public_ip = "54.179.XXX.XXX"  
+    ssh_command      = "ssh -i cloudwatch-stack-key.pem ubuntu@54.179.XXX.XXX"  
+    grafana_url      = "http://54.179.XXX.XXX:3000"  
+    prometheus_url   = "http://54.179.XXX.XXX:9090"  
     app_url          = "http://54.179.XXX.XXX:3001"
 
 3. Add GitHub Secrets
@@ -146,10 +146,10 @@ cloudwatch-stack/
 
     SSH into the server and start the stack manually the first time:
 
-    ssh -i terraform/cloudwatch-stack-key.pem ubuntu@YOUR_EC2_IP
-    cd /home/ubuntu
-    git clone https://github.com/YOURUSERNAME/cloudwatch-stack.git
-    cd cloudwatch-stack/monitoring
+    ssh -i terraform/cloudwatch-stack-key.pem ubuntu@YOUR_EC2_IP  
+    cd /home/ubuntu  
+    git clone https://github.com/YOURUSERNAME/cloudwatch-stack.git  
+    cd cloudwatch-stack/monitoring  
     docker compose up -d
 
     After this, all future deploys are automatic via GitHub Actions.
@@ -160,10 +160,10 @@ cloudwatch-stack/
 
     Expected output:
 
-    NAME              STATUS
-    cloudwatch-app    Up (healthy)
-    cadvisor          Up
-    prometheus        Up
+    NAME              STATUS  
+    cloudwatch-app    Up (healthy)  
+    cadvisor          Up  
+    prometheus        Up  
     grafana           Up
 
 ---
@@ -208,7 +208,7 @@ Panels included:
 - Avg Response Time — milliseconds per route
 - Active Requests — live count of in-flight requests
 
-To import the community Docker dashboard manually:
+To import the community Docker dashboard manually:  
 Dashboards → Import → ID 193 → select Prometheus → Import.
 
 ---
@@ -219,7 +219,7 @@ Alert            | Condition    | Duration
 -----------------|--------------|----------
 High CPU Usage   | CPU > 70%    | 2 minutes
 
-Alerts are sent via email using Gmail SMTP.
+Alerts are sent via email using Gmail SMTP.  
 Configure SMTP credentials in the Grafana service environment variables inside docker-compose.yml.
 
 ---
@@ -228,16 +228,16 @@ Configure SMTP credentials in the Grafana service environment variables inside d
 
 Every push to main triggers the GitHub Actions workflow:
 
-Push to main
-    │
-    ├── Checkout code
-    ├── Log in to Docker Hub
-    ├── Build Docker image from ./app
-    ├── Push image to Docker Hub
-    └── SSH into EC2
-            ├── docker compose pull
-            ├── docker compose up -d
-            └── docker image prune -f
+Push to main  
+&nbsp;&nbsp;&nbsp;&nbsp;│  
+&nbsp;&nbsp;&nbsp;&nbsp;├── Checkout code  
+&nbsp;&nbsp;&nbsp;&nbsp;├── Log in to Docker Hub  
+&nbsp;&nbsp;&nbsp;&nbsp;├── Build Docker image from ./app  
+&nbsp;&nbsp;&nbsp;&nbsp;├── Push image to Docker Hub  
+&nbsp;&nbsp;&nbsp;&nbsp;└── SSH into EC2  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── docker compose pull  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── docker compose up -d  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── docker image prune -f
 
 Total deploy time: approximately 60 seconds.
 
@@ -247,10 +247,10 @@ Total deploy time: approximately 60 seconds.
 
 To avoid AWS charges, destroy all resources when not in use:
 
-    cd terraform
+    cd terraform  
     terraform destroy
 
-Type yes to confirm. This deletes the EC2 instance, VPC, subnet, security group, and key pair.
+Type yes to confirm. This deletes the EC2 instance, VPC, subnet, security group, and key pair.  
 Your code stays on GitHub — you can recreate everything in under 2 minutes with terraform apply.
 
 ---
@@ -271,6 +271,6 @@ Monitoring, alerting, performance       | Prometheus scrapes metrics, Grafana da
 
 ## Author
 
-Eljin — BS Computer Engineering, STI College Global City
-GitHub: https://github.com/YOURUSERNAME
+Eljin — BS Computer Engineering, STI College Global City  
+GitHub: https://github.com/YOURUSERNAME  
 LinkedIn: https://linkedin.com/in/YOURPROFILE
