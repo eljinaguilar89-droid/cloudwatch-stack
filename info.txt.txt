@@ -1,3 +1,0 @@
-IP EC2 54.169.196.1
-
-ssh -i terraform/cloudwatch-stack-key.pem ubuntu@54.169.196.1
